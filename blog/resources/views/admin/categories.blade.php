@@ -30,6 +30,7 @@
                 deleteConfirm: "Вы действительно хотите удалить элемент?",
                 controller: {
                     loadData: function (filter) {
+                        filter.api_token = '{{Auth::user()->api_token}}';
                         return $.ajax({
                             type: "GET",
                             url: "{{ route('api.category.get') }}",
@@ -38,6 +39,7 @@
                         });
                     },
                     updateItem: function (item) {
+                        item.api_token = '{{Auth::user()->api_token}}';
                         return $.ajax({
                             type: "PUT",
                             url: "{{ route('api.category.put') }}",
@@ -46,6 +48,7 @@
                         });
                     },
                     deleteItem: function (item) {
+                        item.api_token = '{{Auth::user()->api_token}}';
                         return $.ajax({
                             type: "DELETE",
                             url: "{{ route('api.category.delete') }}",
@@ -54,7 +57,8 @@
                         });
                     },
                     insertItem: function (item) {
-                       return $.ajax({
+                        item.api_token = '{{Auth::user()->api_token}}';
+                        return $.ajax({
                             type: "POST",
                             url: "{{ route('api.category.post') }}",
                             data: item,

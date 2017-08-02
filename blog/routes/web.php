@@ -11,29 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::group(['middleware'=>'web'], function () {
 
-Route::get('/test', ['uses' => 'testController@test', 'as' => 'search.title']);
+    Auth::routes();
 
-Auth::routes();
+    Route::get('/', function () {
+        return view('welcome');
+    });
 
-Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin'], function() {
+    Route::group(['prefix' => 'admin'], function() {
 
-    Route::get('/category/list', [
-       'uses' => 'CategoryController@listCategories',
-       'as' => 'category.list',
-       'middleware' => ['can:category.list', 'auth']
-   ]);
+        Route::get('/category/list', [
+            'uses' => 'CategoryController@listCategories',
+            'as' => 'category.list',
+            'middleware' => ['can:category.list', 'auth']
+        ]);
 
-   Route::get('/user/list', [
-       'as' => 'user.list',
-       'uses' => 'UserController@listUsers',
-       'middleware' => ['can:user.list', 'auth']
-   ]);
+        Route::get('/user/list', [
+            'as' => 'user.list',
+            'uses' => 'UserController@listUsers',
+            'middleware' => ['can:user.list', 'auth']
+        ]);
 
-   Route::get('/article/list', ['as' => 'article.list', 'middleware' => ['can:article.list', 'auth']]);
+        Route::get('/article/list', [
+            'as' => 'article.list',
+            'middleware' => ['can:article.list', 'auth']]);
+    });
+
 });

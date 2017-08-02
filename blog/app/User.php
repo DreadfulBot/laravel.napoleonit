@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token'
     ];
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token'
     ];
 
     public function role() {
@@ -34,7 +34,7 @@ class User extends Authenticatable
 
     public function hasAccess(array $permissions)
     {
-        $roles = Auth::user()->role()->get();
+        $roles = $this->role()->get();
         foreach ($roles as $role) {
             /* @var \App\Role $role */
             if ($role->hasAccess($permissions)) {

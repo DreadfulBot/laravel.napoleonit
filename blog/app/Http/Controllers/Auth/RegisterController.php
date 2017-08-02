@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Role;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+
         ]);
     }
 
@@ -66,10 +68,16 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'api_token' => str_random(60),
         ]);
 
         // each new user added as guest
-        $user->role()->attach('3', ['is_current' => 1]);
+        $guest = Role::where('role', 'guest')->first();
+
+        if(!$guest)
+            throwException('guest role not found');
+
+        $user->role()->attach($guest->id, ['is_current' => 1]);
 
         return $user;
     }

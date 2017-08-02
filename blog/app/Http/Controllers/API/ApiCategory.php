@@ -5,12 +5,31 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Requests\CategoryParamsRequest;
 use App\Http\Requests\UserParamsRequest;
+use App\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Mockery\Exception;
 
 class ApiCategory extends Controller
 {
+    public function authRequest($permission) {
+        $userId = Auth::guard('api')->id();
+        $user = $userId ? User::find($userId) : null;
+
+        if(!$user)
+            return response()->json('невалидный api-token');
+
+        if(!$user->can($permission))
+            return response()->json(['message' => 'недостаточно прав']);
+
+        return true;
+    }
+
     public function get() {
+        $this->authRequest('category.list');
+
         $category = Input::get('category');
 
         $pageIndex = Input::get('pageIndex') - 1;

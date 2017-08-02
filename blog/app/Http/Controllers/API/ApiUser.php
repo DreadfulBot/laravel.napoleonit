@@ -9,14 +9,28 @@ use Illuminate\Support\Facades\Input;
 
 class ApiUser extends Controller
 {
+    public function get() {
+
+    }
+
     public function post(UserParamsRequest $request) {
         $params = Input::all();
+        //
+        // $user = User::create([
+        //     'name' => $params['name'],
+        //     'email' => $params['email'],
+        //     'password' => bcrypt($params['password'])
+        // ]);
 
-        $user = User::create([
-            'name' => $params['name'],
-            'email' => $params['email'],
-            'password' => bcrypt($params['password']),
-            'role' => $params['role'],
-        ]);
+        header("Content-Type: application/json");
+        echo json_encode($user);
+    }
+
+    public function put(UserParamsRequest $request) {
+
+    }
+
+    public function delete() {
+
     }
 }
