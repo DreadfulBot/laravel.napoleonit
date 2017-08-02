@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token'
+        'name', 'email', 'password', 'api_token', 'remember_token'
     ];
 
     /**
@@ -24,12 +24,16 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'remember_token', 'api_token'
-    ];
+//    protected $hidden = [
+//        'remember_token', 'api_token'
+//    ];
 
     public function role() {
         return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+    }
+
+    public function article() {
+        return $this->hasMany(Article::class, 'user_id', 'id');
     }
 
     public function hasAccess(array $permissions)

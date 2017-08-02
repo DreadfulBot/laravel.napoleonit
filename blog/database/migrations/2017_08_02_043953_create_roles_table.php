@@ -62,6 +62,27 @@ class CreateRolesTable extends Migration
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
             ]);
+
+        DB::table('roles')->insert([
+            'role' => 'guest',
+            'permissions' => '{"category.list":false, 
+                "category.view":false,
+                "category.update":false,
+                "category.delete":false,
+                "category.create":false,
+                "user.list":false,
+                "user.view":false,
+                "user.update":false,
+                "user.delete":false,
+                "user.create":false,
+                "article.list": false,
+                "article.view":false,
+                "article.update":false,
+                "article.delete":false,
+                "article.create":false}',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+            ]);
     }
 
     /**

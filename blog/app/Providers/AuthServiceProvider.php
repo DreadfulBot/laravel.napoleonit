@@ -44,16 +44,19 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('user.update', function($executor, User $user) {
-            if($executor->id == $user->id)
-                return true;
+            //if($executor->id == $user->id)
+            //    return true;
 
             /* @var \App\User $executor */
             return $executor->hasAccess(['user.update']);
         });
 
         Gate::define('user.delete', function($executor, User $user) {
-            if($executor->id == $user->id)
-                return true;
+            // admin must live
+            if($user->id == 1)
+                return false;
+            //if($executor->id == $user->id)
+            //    return true;
 
             /* @var \App\User $executor */
             return $executor->hasAccess(['user.delete']);
@@ -72,11 +75,8 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('category.delete', function($user, Category $category) {
-            $emptyCategory = Category::where('category', 'empty')
-                ->first();
-
             // category empty must be in safe
-            if($emptyCategory && $emptyCategory->id == $category->id)
+            if($category->id == 1)
                 return false;
 
             /* @var \App\User $user */

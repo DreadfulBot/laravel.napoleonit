@@ -16,6 +16,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
            $table->increments('id')->index();
            $table->integer('category_id');
+           $table->integer('user_id');
            $table->string('image');
            $table->string('title');
            $table->string('description');
@@ -24,11 +25,13 @@ class CreateArticlesTable extends Migration
            $table->timestamp('updated_at');
 
            $table->foreign('category_id')->references('id')->on('categories');
+           $table->foreign('user_id')->references('id')->on('users');
         });
 
 
         DB::table('articles')->insert([
             'category_id' => 1,
+            'user_id' => 1,
             'image' => "",
             'title' => "hello world title",
             'description' => "hello world description",

@@ -78,16 +78,9 @@ class ApiCategory extends Controller
             return response()->json(['message' => 'категория не найдена']);
 
         // move all articles to "without category"
-        $categoryEmpty = Category::where('category', 'empty')
-            ->first();
-
-        if(!$categoryEmpty) {
-            return response()->json(['message' => 'не удалось переместить все записи из удаляемой категории']);
-        }
-
         foreach ($category->article()->get() as $article) {
             $article->update([
-               'category_id' => $categoryEmpty->id
+               'category_id' => 1
             ]);
         }
 

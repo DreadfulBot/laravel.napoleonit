@@ -72,6 +72,7 @@
                     {name: "email", title: "email", type: "text", filtering: false, editing: true},
                     {name: "password", title: "password", type: "text", filtering: true, editing: true},
                     {name: "remember_token", title: "remember_token", type: "text", filtering: false, editing: false, inserting: false},
+                    {name: "api_token", title: "api_token", type: "text", filtering: false, editing: false, inserting: false},
                     {name: "is_user", title: "is_user", type: "checkbox", filtering: false, editing: true, inserting: true},
                     {name: "is_admin", title: "is_admin", type: "checkbox", filtering: false, editing: true, inserting: true},
                     {

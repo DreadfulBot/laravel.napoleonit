@@ -72,12 +72,7 @@ class RegisterController extends Controller
         ]);
 
         // each new user added as guest
-        $guest = Role::where('role', 'guest')->first();
-
-        if(!$guest)
-            throwException('guest role not found');
-
-        $user->role()->attach($guest->id, ['is_current' => 1]);
+        $user->role()->attach(3, ['is_current' => 1]);
 
         return $user;
     }
