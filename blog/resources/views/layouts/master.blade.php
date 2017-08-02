@@ -11,14 +11,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    @section('styles')
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        @show
+    {{--@yield('styles')--}}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 </head>
 <body>
-@section('script)
-    @show
+{{--@yield('script)--}}
+
 
 <div id="app">
     <nav class="navbar navbar-default navbar-static-top">
@@ -69,6 +68,27 @@
                                         {{ csrf_field() }}
                                     </form>
                                 </li>
+                                @can('category.list')
+                                    <li>
+                                        <a href="{{ route('category.list') }}">
+                                            Управление: список категорий
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('user.list')
+                                    <li>
+                                        <a href="{{ route('user.list') }}">
+                                            Управление: список пользователей
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('article.list', null)
+                                    <li>
+                                        <a href="{{ route('article.list') }}">
+                                            Управление: список статей
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </li>
                     @endif
@@ -81,8 +101,7 @@
 </div>
 
 <!-- Scripts -->
-@section('scripts)
+{{--@yield('scripts)--}}
     <script src="{{ asset('js/app.js') }}"></script>
-    @show
 </body>
 </html>

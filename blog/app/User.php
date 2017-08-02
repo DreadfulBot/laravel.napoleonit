@@ -28,52 +28,18 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public static function can($permission, $id) {
-        $perm = explode('.', $permission);
+    public function role() {
+        return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+    }
 
-        // if error or not match pattern object.action
-        if(count($perm) == 0 || count($perm) < 2)
-            return false;
-
-        $action = end($perm);
-        $object_root = $perm[0];
-
-        switch ($object_root) {
-            case 'category':
-                switch ($action) {
-                    case 'list':
-                        // only admins
-                        break;
-                    case 'view';
-                        // only admins and users
-                        break;
-                    default:
-                        return false;
-                }
-                break;
-            case 'article':
-                switch ($action) {
-                    case 'list':
-                        // only admins
-                        break;
-                    case 'view':
-                        // only admins and users
-                        break;
-                    default:
-                        return false;
-                }
-                break;
-            case 'user':
-                switch ($action) {
-                    case 'list':
-                        // only admins
-                        break;
-                    case 'view':
-                        // only admins
-                        break;
-                    default:
-                        return false;
-                }
+    public function hasAccess(array $permissions)
+    {
+        $roles = Auth::user()->role()->get();
+        foreach ($roles as $role) {
+            /* @var \App\Role $role */
+            if ($role->hasAccess($permissions)) {
+                return true;
+            }
         }
         return false;
     }

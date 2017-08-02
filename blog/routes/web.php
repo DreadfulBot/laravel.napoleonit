@@ -22,8 +22,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['acl']], function() {
-   Route::get('/category/list', ['as' => 'admin.category.list', 'permission' => 'category.list']);
-   Route::get('/user/list', ['as' => 'admin.user.list', 'permission' => 'user.list']);
-   Route::get('/article/list', ['as' => 'admin.article.list', 'permission' => 'article.list']);
+Route::group(['prefix' => 'admin'], function() {
+   Route::get('/category/list', [
+       'uses' => 'CategoryController@listCategories',
+       'as' => 'category.list',
+       'middleware' => ['can:category.list', 'auth']
+   ]);
+
+   Route::get('/user/list', ['as' => 'user.list', 'middleware' => ['can:user.list', 'auth']]);
+   Route::get('/article/list', ['as' => 'article.list', 'middleware' => ['can:article.list', 'auth']]);
 });

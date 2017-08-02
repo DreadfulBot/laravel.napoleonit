@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -24,7 +25,30 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
+        $this->registerUserPolices();
+        $this->registerCategoryPolices();
+        $this->registerArticlePolices();
         //
+    }
+
+    public function registerUserPolices() {
+        Gate::define('user.list', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['user.list']);
+        });
+    }
+
+    public function registerCategoryPolices() {
+        Gate::define('category.list', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['category.list']);
+        });
+    }
+
+    public function registerArticlePolices() {
+        Gate::define('article.list', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['article.list']);
+        });
     }
 }
