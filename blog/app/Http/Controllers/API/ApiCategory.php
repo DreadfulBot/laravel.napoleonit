@@ -52,8 +52,7 @@ class ApiCategory extends Controller
 
         $result = ['data' => $categories, 'itemsCount' => Category::count()];
 
-        header("Content-Type: application/json");
-        echo json_encode($result);
+        return response()->json($result);
     }
 
     public function post(CategoryParamsRequest $request) {

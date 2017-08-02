@@ -25,9 +25,8 @@ class UserParamsRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|integer'
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
         ];
     }
 
@@ -42,15 +41,10 @@ class UserParamsRequest extends FormRequest
             'email.string' => 'email - неверный формат',
             'email.email' => 'email - неверный формат',
             'email.max' => 'email - максимальная длина 255',
-            'email.unique' => 'email - уже зарегистрирован',
 
             'password.required' => 'пароль - не указано',
             'password.string' => 'пароль - неверный формат',
             'password.min' => 'пароль - минимальная длина 6',
-            'password.confirmed' => 'пароль - не совпадает с повтором',
-
-            'role.required' => 'пароль - не совпадает с повтором',
-            'role.integer' => 'пароль - неверный формат',
         ];
     }
 }

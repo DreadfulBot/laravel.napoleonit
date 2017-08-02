@@ -40,7 +40,23 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('user.create', function($user) {
             /* @var \App\User $user */
-            return $user->hasAccess(['user.list']);
+            return $user->hasAccess(['user.create']);
+        });
+
+        Gate::define('user.update', function($executor, User $user) {
+            if($executor->id == $user->id)
+                return true;
+
+            /* @var \App\User $executor */
+            return $executor->hasAccess(['user.update']);
+        });
+
+        Gate::define('user.delete', function($executor, User $user) {
+            if($executor->id == $user->id)
+                return true;
+
+            /* @var \App\User $executor */
+            return $executor->hasAccess(['user.delete']);
         });
     }
 
