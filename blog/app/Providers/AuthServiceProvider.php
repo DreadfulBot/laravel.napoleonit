@@ -43,6 +43,11 @@ class AuthServiceProvider extends ServiceProvider
             /* @var \App\User $user */
             return $user->hasAccess(['category.list']);
         });
+
+        Gate::define('category.create', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['category.create']);
+        });
     }
 
     public function registerArticlePolices() {

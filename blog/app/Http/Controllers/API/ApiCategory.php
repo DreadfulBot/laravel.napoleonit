@@ -19,10 +19,10 @@ class ApiCategory extends Controller
         $user = $userId ? User::find($userId) : null;
 
         if(!$user)
-            return response()->json('невалидный api-token');
+            return false;
 
         if(!$user->can($permission))
-            return response()->json(['message' => 'недостаточно прав']);
+            return false;
 
         return true;
     }
@@ -56,6 +56,9 @@ class ApiCategory extends Controller
     }
 
     public function post(CategoryParamsRequest $request) {
+        if(!$this->authRequest('category.create'))
+            return response()->json(['message' => 'неудачная проверка подлинности']);
+
         $params = Input::all();
         $result = Category::create([
             'category' => $params['category']
@@ -66,6 +69,9 @@ class ApiCategory extends Controller
     }
 
     public function delete() {
+        if(!$this->authRequest('category.delete'))
+            return response()->json(['message' => 'неудачная проверка подлинности']);
+
         parse_str(file_get_contents("php://input"), $_DELETE);
 
         // category "without category" must live
@@ -90,10 +96,14 @@ class ApiCategory extends Controller
     }
 
     public function put(CategoryParamsRequest $request) {
+        if(!$this->authRequest('category.update'))
+            return response()->json(['message' => 'неудачная проверка подлинности']);
+
         parse_str(file_get_contents("php://input"), $_PUT);
         $category = Category::find($_PUT['id']);
+
         if(!$category)
-            return;
+            return response()->json(['message' => 'категория не найдена']);
 
         // make all empty fields not-null
         foreach ($_PUT as $index => $value)
