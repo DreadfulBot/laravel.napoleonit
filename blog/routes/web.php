@@ -11,7 +11,6 @@
 |
 */
 
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,12 +22,18 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin'], function() {
-   Route::get('/category/list', [
+
+    Route::get('/category/list', [
        'uses' => 'CategoryController@listCategories',
        'as' => 'category.list',
        'middleware' => ['can:category.list', 'auth']
    ]);
 
-   Route::get('/user/list', ['as' => 'user.list', 'middleware' => ['can:user.list', 'auth']]);
+   Route::get('/user/list', [
+       'as' => 'user.list',
+       'uses' => 'UserController@listUsers',
+       'middleware' => ['can:user.list', 'auth']
+   ]);
+
    Route::get('/article/list', ['as' => 'article.list', 'middleware' => ['can:article.list', 'auth']]);
 });

@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta name="csrf-token" content="{{csrf_token()}}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- js -->
+    <script src="{{asset('js/jquery-2.1.1.min.js')}}" language="JavaScript"></script>
 
     <!-- Styles -->
     @yield('styles')
@@ -17,7 +21,6 @@
 </head>
 <body>
 <div id="app">
-    @yield('script')
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -94,7 +97,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="min-height: 600px;">
         @yield('content')
     </div>
 
@@ -102,6 +105,15 @@
 
 <!-- Scripts -->
     @yield('scripts')
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{--<script src="{{ asset('js/app.js') }}"></script>--}}
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    @yield('script')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 </body>
 </html>

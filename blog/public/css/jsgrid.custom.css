@@ -1,0 +1,4 @@
+.jsgrid-cell,
+.jsgrid-header-cell {
+    overflow-x: hidden;
+}
