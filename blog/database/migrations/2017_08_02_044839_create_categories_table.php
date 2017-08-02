@@ -14,11 +14,17 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-           $table->increments('id')->index();
-           $table->string('category');
-           $table->timestamp('created_at');
-           $table->timestamp('updated_at');
+            $table->increments('id')->index();
+            $table->string('category');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
+
+        DB::table('categories')->insert([
+            'category' => 'empty',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
+        ]);
     }
 
     /**

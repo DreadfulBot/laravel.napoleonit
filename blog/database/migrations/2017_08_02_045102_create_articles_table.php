@@ -20,9 +20,22 @@ class CreateArticlesTable extends Migration
            $table->string('title');
            $table->string('description');
            $table->string('content');
+           $table->timestamp('created_at');
+           $table->timestamp('updated_at');
 
            $table->foreign('category_id')->references('id')->on('categories');
         });
+
+
+        DB::table('articles')->insert([
+            'category_id' => 1,
+            'image' => "",
+            'title' => "hello world title",
+            'description' => "hello world description",
+            'content' => 'hello world content',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
+        ]);
     }
 
     /**
