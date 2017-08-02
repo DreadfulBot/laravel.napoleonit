@@ -11,19 +11,16 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    {{--@yield('styles')--}}
+    @yield('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 </head>
 <body>
-{{--@yield('script)--}}
-
-
 <div id="app">
+    @yield('script')
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-
                 <!-- Collapsed Hamburger -->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                     <span class="sr-only">Toggle Navigation</span>
@@ -97,11 +94,14 @@
         </div>
     </nav>
 
-    @yield('content')
+    <div class="container">
+        @yield('content')
+    </div>
+
 </div>
 
 <!-- Scripts -->
-{{--@yield('scripts)--}}
+    @yield('scripts')
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

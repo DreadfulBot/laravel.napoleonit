@@ -9,6 +9,8 @@
 
                 <div class="panel-body">
                     You are logged in!
+
+                    Watch allowed actions in user menu (right top side)
                 </div>
             </div>
         </div>
