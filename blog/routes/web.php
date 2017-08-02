@@ -37,7 +37,14 @@ Route::group(['middleware'=>'web'], function () {
 
         Route::get('/article/list', [
             'as' => 'article.list',
-            'middleware' => ['can:article.list', 'auth']]);
+            'middleware' => ['can:article.list', 'auth']
+        ]);
+
+        Route::post('/article/submit', [
+            'as' => 'article.submit',
+//            'uses' =>
+            'middleware' => ['can:article.create', 'auth']
+        ]);
     });
 
 });
