@@ -14,21 +14,22 @@ use Mockery\Exception;
 
 class ApiCategory extends Controller
 {
-    public function authRequest($permission) {
+    public function authRequest($permission, $params = null) {
         $userId = Auth::guard('api')->id();
         $user = $userId ? User::find($userId) : null;
 
         if(!$user)
             return false;
 
-        if(!$user->can($permission))
+        if(!$user->can($permission, $params))
             return false;
 
         return true;
     }
 
     public function get() {
-        $this->authRequest('category.list');
+        if(!$this->authRequest('category.list'))
+            return response()->json(['message' => 'неудачная проверка подлинности']);
 
         $category = Input::get('category');
 
@@ -64,43 +65,45 @@ class ApiCategory extends Controller
             'category' => $params['category']
         ]);
 
-        header("Content-Type: application/json");
-        echo json_encode($result);
+        return response()->json($result);
     }
 
     public function delete() {
-        if(!$this->authRequest('category.delete'))
+        parse_str(file_get_contents("php://input"), $_DELETE);
+        $category = Category::find($_DELETE['id']);
+
+        if(!$this->authRequest('category.delete', $category))
             return response()->json(['message' => 'неудачная проверка подлинности']);
 
-        parse_str(file_get_contents("php://input"), $_DELETE);
-
-        // category "without category" must live
-        if($_DELETE['id'] == 6)
-            return false;
-
-        $category = Category::find($_DELETE['id']);
         if(!$category)
-            return;
+            return response()->json(['message' => 'категория не найдена']);
 
-        // move all categories to "without category"
+        // move all articles to "without category"
+        $categoryEmpty = Category::where('category', 'empty')
+            ->first();
+
+        if(!$categoryEmpty) {
+            return response()->json(['message' => 'не удалось переместить все записи из удаляемой категории']);
+        }
+
         foreach ($category->article()->get() as $article) {
             $article->update([
-               'category_id' => 6
+               'category_id' => $categoryEmpty->id
             ]);
         }
 
+        //delete category
         $result = $category->delete();
 
-        header("Content-Type: application/json");
-        echo json_encode($result);
+        return response()->json($result);
     }
 
     public function put(CategoryParamsRequest $request) {
-        if(!$this->authRequest('category.update'))
-            return response()->json(['message' => 'неудачная проверка подлинности']);
-
         parse_str(file_get_contents("php://input"), $_PUT);
         $category = Category::find($_PUT['id']);
+
+        if(!$this->authRequest('category.update', $category))
+            return response()->json(['message' => 'неудачная проверка подлинности']);
 
         if(!$category)
             return response()->json(['message' => 'категория не найдена']);
@@ -112,7 +115,6 @@ class ApiCategory extends Controller
 
         $category->update($_PUT);
 
-        header("Content-Type: application/json");
-        echo json_encode($category);
+        return response()->json($category);
     }
 }

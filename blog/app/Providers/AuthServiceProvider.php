@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Category;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -36,6 +37,11 @@ class AuthServiceProvider extends ServiceProvider
             /* @var \App\User $user */
             return $user->hasAccess(['user.list']);
         });
+
+        Gate::define('user.create', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['user.list']);
+        });
     }
 
     public function registerCategoryPolices() {
@@ -47,6 +53,23 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('category.create', function($user) {
             /* @var \App\User $user */
             return $user->hasAccess(['category.create']);
+        });
+
+        Gate::define('category.delete', function($user, Category $category) {
+            $emptyCategory = Category::where('category', 'empty')
+                ->first();
+
+            // category empty must be in safe
+            if($emptyCategory && $emptyCategory->id == $category->id)
+                return false;
+
+            /* @var \App\User $user */
+            return $user->hasAccess(['category.delete']);
+        });
+
+        Gate::define('category.update', function($user, Category $category) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['category.update']);
         });
     }
 
