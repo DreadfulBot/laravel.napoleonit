@@ -94,5 +94,20 @@ class AuthServiceProvider extends ServiceProvider
             /* @var \App\User $user */
             return $user->hasAccess(['article.list']);
         });
+
+        Gate::define('article.create', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['article.create']);
+        });
+
+        Gate::define('article.delete', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['article.delete']);
+        });
+
+        Gate::define('article.update', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['article.update']);
+        });
     }
 }

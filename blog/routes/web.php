@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware'=>'web'], function () {
+Route::group(['middleware' => 'web'], function () {
 
     Auth::routes();
 
@@ -21,7 +21,8 @@ Route::group(['middleware'=>'web'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::group(['prefix' => 'admin'], function() {
+    // admin options
+    Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/category/list', [
             'uses' => 'CategoryController@listCategories',
@@ -39,11 +40,32 @@ Route::group(['middleware'=>'web'], function () {
             'as' => 'article.list',
             'middleware' => ['can:article.list', 'auth']
         ]);
+    });
 
-        Route::post('/article/submit', [
-            'as' => 'article.submit',
-//            'uses' =>
+    // articles
+    Route::group(['prefix' => 'article'], function() {
+        Route::get('/create/view', [
+            'as' => 'article.create.view',
+            'uses' => 'ArticleController@showCreate',
             'middleware' => ['can:article.create', 'auth']
+        ]);
+
+        Route::post('/create', [
+            'as' => 'article.create.submit',
+            'uses' => 'ArticleController@submitCreate',
+            'middleware' => ['can:article.create', 'auth']
+        ]);
+
+        Route::get('/update/view', [
+            'as' => 'article.update.view',
+            'uses' => 'ArticleController@showUpdate',
+            'middleware' => ['can:article.update', 'auth']
+        ]);
+
+        Route::post('/update', [
+            'as' => 'article.update.submit',
+            'uses' => 'ArticleController@submitUpdate',
+            'middleware' => ['can:article.update', 'auth']
         ]);
     });
 

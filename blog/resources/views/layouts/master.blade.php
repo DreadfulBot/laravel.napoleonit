@@ -82,10 +82,17 @@
                                         </a>
                                     </li>
                                 @endcan
-                                @can('article.list', null)
+                                @can('article.list')
                                     <li>
                                         <a href="{{ route('article.list') }}">
                                             Управление: список статей
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('article.create')
+                                    <li>
+                                        <a href="{{ route('article.create.view') }}">
+                                            Управление: создать статью
                                         </a>
                                     </li>
                                 @endcan
@@ -107,6 +114,7 @@
     @yield('scripts')
     {{--<script src="{{ asset('js/app.js') }}"></script>--}}
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/validator.js') }}"></script>
     @yield('script')
     <script>
         $.ajaxSetup({

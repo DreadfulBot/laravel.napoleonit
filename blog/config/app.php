@@ -179,6 +179,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
 
     ],
 
