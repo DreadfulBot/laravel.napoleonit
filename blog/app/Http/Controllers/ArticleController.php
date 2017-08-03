@@ -7,7 +7,6 @@ use App\Http\Requests\ArticleParamsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Mockery\Exception;
 
 class ArticleController extends Controller
 {
@@ -41,21 +40,41 @@ class ArticleController extends Controller
             DB::commit();
             return response()->redirectToRoute('article.view', ['articleId' => $article->id]);
 
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             DB::rollBack();
             return response()->redirectTo('/');
         }
     }
 
     public function submitUpdate(ArticleParamsRequest $request) {
-        $params = Input::all();
+        try {
+            $params = Input::all();
 
-        if(empty($params['article_id']))
-            return redirect('/');
+            if (empty($params['article_id']))
+                return redirect('/');
 
-        $article = Article::findOrFail($params['article_id']);
+            $article = Article::findOrFail($params['article_id']);
+            $article->update($params);
 
-        return response()->redirectToRoute('article.view', ['articleId' => $article->id]);
+            // move image to dir
+            $imageName = $article->id . '-' . str_random(10) . '.' .
+                $request->file('image')->getClientOriginalExtension();
+
+            // assign image
+            $request->file('image')->move(
+                base_path() . env('ARTICLE_ABS_IMAGE_PATH'), $imageName
+            );
+
+            $article->update(
+                ['image' => $imageName]
+            );
+
+            DB::commit();
+            return response()->redirectToRoute('article.view', ['articleId' => $article->id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->redirectTo('/');
+        }
     }
 
     public function viewUpdate($articleId) {
