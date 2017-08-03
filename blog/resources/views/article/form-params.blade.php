@@ -1,6 +1,9 @@
 <form action="{{$actionRoute}}" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
     <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+    @if(!empty($article))
+        <input type="hidden" name="article_id" value="{{$article->id}}">
+    @endif
 
     <div class="form-group">
         <label for="title">Заголовок:</label>
@@ -31,7 +34,8 @@
         <label for="category">Категория:</label>
         <select name="category_id" title="category_id" class="form-control" data-error="обязательное поле" required>
             @foreach($categories as $category)
-                <option value="{{$category->id}}" @if($category->id == old('category') || $category == $article->$category_id) selected @endif>
+                <option value="{{$category->id}}" @if($category->id == old('category') ||
+                $category == isset($article) ? $article->category_id : $category) selected @endif>
                     {{$category->category}}
                 </option>
             @endforeach

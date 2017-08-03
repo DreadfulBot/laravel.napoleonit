@@ -44,9 +44,16 @@ Route::group(['middleware' => 'web'], function () {
 
     // articles
     Route::group(['prefix' => 'article'], function() {
+
+        Route::get('/{articleId}/view', [
+            'as' => 'article.view',
+            'uses' => 'ArticleController@viewArticle',
+            'middleware' => ['can:article.view', 'auth']
+        ])->where('articleId', '[0-9]+');
+
         Route::get('/create/view', [
             'as' => 'article.create.view',
-            'uses' => 'ArticleController@showCreate',
+            'uses' => 'ArticleController@viewCreate',
             'middleware' => ['can:article.create', 'auth']
         ]);
 
@@ -56,9 +63,9 @@ Route::group(['middleware' => 'web'], function () {
             'middleware' => ['can:article.create', 'auth']
         ]);
 
-        Route::get('/update/view', [
+        Route::get('/update/{articleId}/view', [
             'as' => 'article.update.view',
-            'uses' => 'ArticleController@showUpdate',
+            'uses' => 'ArticleController@viewUpdate',
             'middleware' => ['can:article.update', 'auth']
         ]);
 

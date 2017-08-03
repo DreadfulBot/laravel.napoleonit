@@ -90,6 +90,11 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     public function registerArticlePolices() {
+        Gate::define('article.view', function($user) {
+            /* @var \App\User $user */
+            return $user->hasAccess(['article.view']);
+        });
+
         Gate::define('article.list', function($user) {
             /* @var \App\User $user */
             return $user->hasAccess(['article.list']);
