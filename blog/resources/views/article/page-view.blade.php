@@ -1,7 +1,13 @@
 @extends('layouts.master')
 
 @section('content')
-    <h3>Просмотр статьи</h3>
+
+    @include('category.block-categories-h')
+
+
+    <div class="row">
+        <div class="col-md-12"><h3>Просмотр статьи</h3></div>
+    </div>
 
     <div class="row">
         <div class="col-md-12"><h3>{{$article->title}}</h3></div>
@@ -33,8 +39,10 @@
     </div>
 
     <div class="row">
+        <div class="col-md-6"><a href="{{URL::previous()}}">Назад</a></div>
         @can('article.update')
             <div class="col-md-6"><a href="{{route('article.update.view', ['articleId' => $article->id])}}">Изменить</a></div>
         @endcan
+
     </div>
 @endsection

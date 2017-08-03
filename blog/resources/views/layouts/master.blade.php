@@ -82,17 +82,17 @@
                                         </a>
                                     </li>
                                 @endcan
-                                @can('article.list')
-                                    <li>
-                                        <a href="{{ route('article.list') }}">
-                                            Управление: список статей
-                                        </a>
-                                    </li>
-                                @endcan
                                 @can('article.create')
                                     <li>
                                         <a href="{{ route('article.create.view') }}">
                                             Управление: создать статью
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('category.list')
+                                    <li>
+                                        <a href="{{ route('category.view') }}">
+                                            Просмотр категорий
                                         </a>
                                     </li>
                                 @endcan

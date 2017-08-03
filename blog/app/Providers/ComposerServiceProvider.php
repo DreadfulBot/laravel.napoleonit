@@ -16,7 +16,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['article.form-params'], 'App\ViewComposers\CategoryComposer');
+        View::composer(['article.form-params', 'category.block-categories-h'], 'App\ViewComposers\CategoryComposer');
     }
 
     /**

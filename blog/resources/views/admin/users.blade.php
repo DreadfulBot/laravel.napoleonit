@@ -97,15 +97,19 @@
         }
 
         $(document).ready(function () {
-            alert('при изменениие пароля пользователя следует указывать его в обычном виде' +
-                ' - при сохранении он будет зашифрован');
-
             initUsersGrid();
         });
     </script>
 @endsection
 
 @section('content')
+    <div class="row">
+        <div class="col-md-6">
+            <div class="alert-info">
+                <p>при изменениие пароля пользователя следует указывать его в обычном виде - при сохранении он будет зашифрован</div></p>
+        </div>
+    </div>
+
     <div id="users-grid" style="height: 400px;"></div>
 @endsection
 

@@ -96,4 +96,13 @@ class ArticleController extends Controller
             ->with(['article' => $article]);
     }
 
+    public function listArticle($categoryId) {
+        $articles = Article::where('category_id', $categoryId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view ('article.page-list', ['articles' => $articles]);
+    }
+
 }

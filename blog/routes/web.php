@@ -35,16 +35,28 @@ Route::group(['middleware' => 'web'], function () {
             'uses' => 'UserController@listUsers',
             'middleware' => ['can:user.list', 'auth']
         ]);
+    });
 
-        Route::get('/article/list', [
-            'as' => 'article.list',
-            'middleware' => ['can:article.list', 'auth']
-        ]);
+    // categories
+    Route::group(['prefix' => 'category'], function () {
+
+        Route::get('{categoryId}/view', [
+            'as' => 'category.view.id',
+            'middleware' => ['can:category.view', 'auth'],
+            'uses' => 'CategoryController@showCategory'
+        ])->where('categoryId', '[0-9]+');
+
+        Route::get('view', [
+            'as' => 'category.view',
+            'middleware' => ['can:category.list', 'auth'],
+            'uses' => 'CategoryController@showCategories'
+        ])->where('categoryId', '[0-9]+');
+
+
     });
 
     // articles
     Route::group(['prefix' => 'article'], function() {
-
         Route::get('/{articleId}/view', [
             'as' => 'article.view',
             'uses' => 'ArticleController@viewArticle',
