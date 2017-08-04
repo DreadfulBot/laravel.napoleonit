@@ -48,10 +48,8 @@ class ArticleController extends Controller
 
     public function submitUpdate(ArticleParamsRequest $request) {
         try {
+            DB::beginTransaction();
             $params = Input::all();
-
-            if (empty($params['article_id']))
-                return redirect('/');
 
             $article = Article::findOrFail($params['article_id']);
             $article->update($params);

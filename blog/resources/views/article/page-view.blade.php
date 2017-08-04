@@ -15,7 +15,9 @@
 
     <div class="row">
         <div class="col-md-4">
-            <img src="{{asset(env("ARTICLE_REL_IMAGE_PATH").$article->image)}}">
+            @if(!empty($article->image) && File::exists(base_path() . env("ARTICLE_ABS_IMAGE_PATH").$article->image))
+                <img src="{{asset(env("ARTICLE_REL_IMAGE_PATH").$article->image)}}">
+            @endif
         </div>
         <div class="col-md-8">
             <h3>Краткое описание:</h3>

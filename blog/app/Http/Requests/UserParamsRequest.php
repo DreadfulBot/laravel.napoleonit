@@ -35,7 +35,7 @@ class UserParamsRequest extends FormRequest
         return [
             'name.required' => 'имя - не указано',
             'name.string' => 'имя - неверный формат',
-            'name.255' => 'имя - максимальная длина 255',
+            'name.max' => 'имя - максимальная длина 255',
 
             'email.required' => 'email - не указано',
             'email.string' => 'email - неверный формат',
